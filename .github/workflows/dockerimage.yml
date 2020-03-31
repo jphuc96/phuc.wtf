@@ -1,4 +1,4 @@
-name: Build and Push Docker
+name: Build & Deploy phuc.wtf
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
 
 jobs:
 
-  build:
-
+  build-docker:
+    name: build docker image
     runs-on: ubuntu-latest
 
     steps:
@@ -18,3 +18,22 @@ jobs:
       run: docker build . --file Dockerfile --tag reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
     - name: Push Image
       run: docker push reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
+  
+  deploy-kubernetes:
+    name: deploy to cluster
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: deploy to cluster
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: set -n phucwtf image --record deployment/phucwtf container=reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
+    - name: verify deployment
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBECTL_VERSION: "1.17"
+      with:
+        args: '"rollout -n phucwtf status deployment/phuc.wtf"'
