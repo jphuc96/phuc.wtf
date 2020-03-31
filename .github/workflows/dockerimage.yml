@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build and Push Docker
 
 on:
   push:
@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag reg.phuc.wtf/phuc.wtf:$(date +%s)
+      run: docker build . --file Dockerfile --tag reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
     - name: Push Image
-      run: docker push reg.phuc.wtf/phuc.wtf:$(date +%s)
+      run: docker push reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
