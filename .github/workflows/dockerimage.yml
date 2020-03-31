@@ -21,6 +21,7 @@ jobs:
   
   deploy-kubernetes:
     name: deploy to cluster
+    needs: [build-docker]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -29,7 +30,7 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: set -n phucwtf image --record deployment/phucwtf container=reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
+        args: set -n phucwtf image --record deployment/phucwtf phucwtf=reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
     - name: verify deployment
       uses: steebchen/kubectl@master
       env:
