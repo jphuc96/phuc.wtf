@@ -9,5 +9,6 @@ COPY . /src
 RUN hugo --baseURL=https://phuc.wtf/
 
 FROM nginx:stable-alpine
-COPY --from=hugo /target /usr/share/nginx/html
+COPY --from=hugo /target /var/www/phuc.wtf/public
+COPY ./nginx.conf /etc/nginx/conf.d/
 EXPOSE 80
