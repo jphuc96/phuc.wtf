@@ -39,18 +39,3 @@ jobs:
       with:
         kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
         args: rollout -n phucwtf status deployment/phucwtf
-  
-#     - uses: actions/checkout@master
-#     - name: deploy to cluster
-#       uses: steebchen/kubectl@master
-#       env:
-#         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#       with:
-#         args: set -n phucwtf image --record deployment/phucwtf phucwtf=reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
-#     - name: verify deployment
-#       uses: steebchen/kubectl@master
-#       env:
-#         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#         KUBECTL_VERSION: "1.17"
-#       with:
-#         args: '"rollout -n phucwtf status deployment/phucwtf"'
