@@ -12,4 +12,5 @@ RUN hugo --environment=production --baseURL=https://phuc.wtf/
 FROM nginx:stable-alpine
 RUN mv /usr/share/nginx/html/index.html /usr/share/nginx/html/old-index.html
 COPY --from=HUGOINSTALL /target /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
