@@ -15,9 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
+      run: docker build . --file Dockerfile --tag jphuc96/phuc.wtf:$GITHUB_SHA
     - name: Push Image
-      run: docker push reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
+      run: docker push jphuc96/phuc.wtf:$GITHUB_SHA
   
   deploy-kubernetes:
     name: deploy to cluster
@@ -28,7 +28,7 @@ jobs:
       name: Deploy
       with:
         kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
-        args: set -n phucwtf image --record deployment/phucwtf phucwtf=reg.phuc.wtf/phuc.wtf:$GITHUB_SHA
+        args: set -n phucwtf image --record deployment/phucwtf phucwtf=jphuc96/phuc.wtf:$GITHUB_SHA
     - uses: danielr1996/kubectl-action@1.0.0
       name: Rollout
       with:
